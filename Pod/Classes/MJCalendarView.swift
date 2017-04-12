@@ -26,7 +26,7 @@ public extension MJCalendarViewDelegate {
 
 open class MJCalendarView: UIView, UIScrollViewDelegate, MJComponentDelegate {
     open var configuration: MJConfiguration
-    var periods: [MJPeriodView]?validate 
+    var periods: [MJPeriodView]? 
     var weekLabelsView: MJWeekLabelsView?
     var periodsContainerView: UIScrollView?
     
