@@ -225,6 +225,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func calendar(_ calendarView: MJCalendarView, didSelectDate date: Date) {
         self.scrollTableViewToDate(date)
     }
+    
+    func calendar(_ calendarView: MJCalendarView, shouldSelectDate date: Date) -> Bool {
+        return date == (Date() as NSDate).atStartOfDay()
+    }
 
     //MARK: Toolbar actions
     @IBAction func didTapMonth(_ sender: AnyObject) {

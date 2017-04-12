@@ -11,15 +11,22 @@ import NSDate_Escort
 import UIView_JMFrame
 
 public protocol MJCalendarViewDelegate: NSObjectProtocol {
+    func calendar(_ calendarView: MJCalendarView, shouldSelectDate date: Date) -> Bool
     func calendar(_ calendarView: MJCalendarView, didChangePeriod periodDate: Date, bySwipe: Bool)
     func calendar(_ calendarView: MJCalendarView, didSelectDate date: Date)
     func calendar(_ calendarView: MJCalendarView, backgroundForDate date: Date) -> UIColor?
     func calendar(_ calendarView: MJCalendarView, textColorForDate date: Date) -> UIColor?
 }
 
+public extension MJCalendarViewDelegate {
+    func calendar(_ calendarView: MJCalendarView, shouldSelectDate date: Date) -> Bool {
+        return true
+    }
+}
+
 open class MJCalendarView: UIView, UIScrollViewDelegate, MJComponentDelegate {
     open var configuration: MJConfiguration
-    var periods: [MJPeriodView]?
+    var periods: [MJPeriodView]?validate 
     var weekLabelsView: MJWeekLabelsView?
     var periodsContainerView: UIScrollView?
     
@@ -213,6 +220,7 @@ open class MJCalendarView: UIView, UIScrollViewDelegate, MJComponentDelegate {
     }
     
     open func selectDate(_ date: Date) {
+        
         let validatedDate = dateInRange(date)
         if !self.isDateAlreadyShown(validatedDate) {
             let periodDate = self.startDate(validatedDate, withOtherMonth: false)
@@ -290,6 +298,11 @@ open class MJCalendarView: UIView, UIScrollViewDelegate, MJComponentDelegate {
     }
     
     func componentView(_ componentView: MJComponentView, didSelectDate date: Date) {
+        
+        if let calendarDelegate = calendarDelegate, !calendarDelegate.calendar(self, shouldSelectDate: date) {
+            return
+        }
+        
         self.selectDate(date)
         self.calendarDelegate?.calendar(self, didSelectDate: date)
     }
